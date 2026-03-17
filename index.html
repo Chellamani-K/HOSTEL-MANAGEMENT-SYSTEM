@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Hostel Management System - Government of Tamil Nadu. Manage hostel operations, meal tracking, student attendance, and complaints efficiently.">
+
+    <title>Hostel Management System | Government of Tamil Nadu</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Accessibility Bar (TN Gov Top Strip) -->
+    <div class="accessibility-bar"> 
+        <div class="bar-inner">
+            <div>
+                <a href="#">Screen Reader Access</a>
+                <a href="#">Skip To Main Content</a>
+            </div>
+            <div class="font-controls">
+                <button onclick="app.toggleLanguage()" id="langToggleBtn" title="Switch Language" style="background:#0056b3; color:white; border:none; padding:4px 10px; border-radius:4px; font-weight:bold; cursor:pointer; margin-right:10px;">தமிழ்</button>
+                <span style="color: #888; font-size: 0.7rem;">Font Size:</span>
+                <button onclick="changeFontSize(1)" title="Increase Font">A+</button>
+                <button onclick="changeFontSize(0)" title="Normal Font">A</button>
+                <button onclick="changeFontSize(-1)" title="Decrease Font">A-</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Section (TN Gov Style) -->
+    <header class="tnpsc-header">
+        <div class="logo-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/TamilNadu_Logo.svg" alt="Tamil Nadu Emblem"
+                class="emblem" onerror="this.src='https://via.placeholder.com/85?text=TN'">
+            <div class="header-text">
+                <h1>தமிழ்நாடு அரசு</h1>
+                <h1 class="header-title-en">HOSTEL MANAGEMENT SYSTEM</h1>
+                <h2>Government of Tamil Nadu (Undertaking)</h2>
+            </div>
+            <div class="header-right">
+                <img src="https://www.tn.gov.in/sites/default/new_images/thiru_img5.png" alt="Thiruvalluvar"
+                    class="thiru-img">
+                <div class="kural-section">
+                    <p class="kural-text">செவிக்குணவு இல்லாத போழ்து சிறிது<br>வயிற்றுக்கும் ஈயப் படும்.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Bar (TN Gov Mega Nav Style) -->
+    <nav class="tnpsc-nav" id="main-nav">
+        <ul>
+            <li><a href="#" onclick="app.goHome()">Home</a></li>
+            <li>
+                <a href="#">Services <span class="caret">▼</span></a>
+                <ul class="dropdown">
+                    <li><a href="#" onclick="app.showMenu()">📋 Menu Chart</a></li>
+                    <li><a href="#" onclick="app.showRules()">📕 Hostel Rules</a></li>
+                    <li><a href="#" onclick="app.showComplaints()">📢 Submit Complaint</a></li>
+                    <li><a href="#" onclick="app.showComplaintTracker()">📊 Track Complaints</a></li>
+                    <li><a href="#" onclick="app.showNoticeBoard()">📢 Notice Board</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Login <span class="caret">▼</span></a>
+                <ul class="dropdown">
+                    <li><a href="#" onclick="app.login('admin')">🛡️ Admin Login</a></li>
+                    <li><a href="#" onclick="app.login('warden')">👨‍🍳 Warden Login</a></li>
+                    <li><a href="#" onclick="app.login('student')">🎓 Student Login</a></li>
+                    <li><a href="#" onclick="app.showRegistration()">📝 Student Registration</a></li>
+                </ul>
+            </li>
+            <li><a href="#" onclick="app.showNoticeBoard()">Notice Board</a></li>
+            <li><a href="#" onclick="app.showContacts()">Contact</a></li>
+            <li>
+                <a href="#">Others <span class="caret">▼</span></a>
+                <ul class="dropdown">
+                    <li><a href="https://youtu.be/OS0_TI_AONE?si=G9iLPoIRvZS96tQ9" target="_blank">🎥 Don't Waste
+                            Food</a></li>
+                    <li><a href="#" onclick="app.showContacts()">📞 Help Line</a></li>
+                    <li><a href="#" onclick="app.showSitemap()">🗺️ Site Map</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Marquee Notification (TN Gov Style Red Strip) -->
+    <div class="marquee-container">
+        <span class="marquee-label">What's New &nbsp; ▶</span>
+        <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+            <a href="#">📌 New Lunch Cutoff Time: 12:00 PM</a> &nbsp; | &nbsp;
+            <a href="#">🔐 Admin Login Required for Database Updates</a> &nbsp; | &nbsp;
+            <a href="#">📝 Warden Report Submission Due Today</a> &nbsp; | &nbsp;
+            <a href="#">🍽️ Weekly Menu Chart Updated – Check Now!</a>
+        </marquee>
+    </div>
+
+    <!-- Hero Carousel Section (TN Gov Style) -->
+    <section class="hero-carousel" id="hero-section">
+        <div class="carousel-main">
+            <div class="slide active">
+                <div class="slide-content">
+                    <h3>🏨 Welcome to Hostel Management Portal</h3>
+                    <p>A smart digital platform to manage hostel operations – meals, attendance, stock, and more.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <h3>🍽️ Zero Food Wastage Initiative</h3>
+                    <p>Students can opt-in/out of meals before cutoff time, helping reduce food wastage significantly.
+                    </p>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <h3>📊 Live Analytics & Reports</h3>
+                    <p>Wardens get real-time data on meal consumption, attendance, and daily forecasting.</p>
+                </div>
+            </div>
+            <button class="carousel-arrow prev" onclick="carouselPrev()">❮</button>
+            <button class="carousel-arrow next" onclick="carouselNext()">❯</button>
+            <div class="carousel-nav" id="carousel-dots"></div>
+        </div>
+        <div class="hero-sidebar">
+            <div class="highlight-card" onclick="app.login('student')">
+                <h4>🎓 Student Portal</h4>
+                <p>Mark attendance, opt-in/out meals, submit complaints & view menu.</p>
+            </div>
+            <div class="highlight-card" onclick="app.login('warden')">
+                <h4>👨‍🍳 Warden Portal</h4>
+                <p>View analytics, update daily menu, check attendance details.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <div class="content-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3><span class="icon">🔑</span> User Login</h3>
+                <ul>
+                    <li><a href="#" onclick="app.login('admin')">Admin Login</a></li>
+                    <li><a href="#" onclick="app.login('warden')">Warden Login</a></li>
+                    <li><a href="#" onclick="app.login('student')">Student Login</a></li>
+                    <li><a href="#" onclick="app.showRegistration()">Student Registration</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3><span class="icon">⚡</span> Quick Links</h3>
+                <ul>
+                    <li><a href="https://youtu.be/OS0_TI_AONE?si=G9iLPoIRvZS96tQ9" target="_blank">Don't Waste Food</a>
+                    </li>
+                    <li><a href="#" onclick="app.showRules()">Hostel Rules & Regulations</a></li>
+                    <li><a href="#" onclick="app.showMenu()">Weekly Menu Chart</a></li>
+                    <li><a href="#" onclick="app.showComplaints()">Complaints / Queries</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3><span class="icon">📞</span> Help Desk</h3>
+                <ul>
+                    <li><a href="#">Hostel Office: 044-XXXXXXX</a></li>
+                    <li><a href="#">Warden Mobile: 98XXXXXXXX</a></li>
+                    <li><a href="#">Emergency: 112</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Dynamic Content Area -->
+        <main id="app">
+            <!-- Login / Welcome Screen -->
+            <div id="login-container" class="page-container active">
+                <div class="welcome-banner">
+                    <h2>🏛️ Welcome to the Hostel Management Portal</h2>
+                    <p>This system is designed to manage hostel operations efficiently. It enables students, wardens,
+                        and administrators to collaborate seamlessly.</p>
+                    <p style="margin-top: 8px;">Please select your role from the <strong>Login</strong> menu in the
+                        navigation bar or sidebar to proceed.</p>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-icon">🏨</div>
+                        <div class="stat-number">200</div>
+                        <div class="stat-label">Total Capacity</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">🍽️</div>
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Meals / Day</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">👨‍🍳</div>
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Staff Members</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Portal Access</div>
+                    </div>
+                </div>
+
+                <!-- Info Cards Grid (TN Gov Style - Color Coded) -->
+                <div class="info-grid">
+                    <div class="info-card card-blue">
+                        <h3>🎯 Vision</h3>
+                        <div class="card-body">
+                            <p>To achieve zero food wastage in all government hostels through smart digital tracking and
+                                efficient meal planning.</p>
+                        </div>
+                    </div>
+                    <div class="info-card card-green">
+                        <h3>🚀 Mission</h3>
+                        <div class="card-body">
+                            <p>Implement smart tracking and feedback systems for better meal planning, student
+                                attendance management, and resource optimization.</p>
+                        </div>
+                    </div>
+                    <div class="info-card card-maroon">
+                        <h3>📋 Key Features</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li>Student Meal Opt-in/Out System</li>
+                                <li>Real-time Attendance Tracking</li>
+                                <li>Warden Analytics Dashboard</li>
+                                <li>Stock Management System</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="info-card card-gold">
+                        <h3>📢 Announcements</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li>New meal cutoff times effective immediately</li>
+                                <li>Weekly inspection every Tuesday</li>
+                                <li>Stock inventory updated daily</li>
+                                <li>Complaint resolution within 48 hours</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div id="admin-dashboard" class="page-container hidden">
+                <!-- Rendered by JS -->
+            </div>
+
+            <!-- Login Form Page -->
+            <div id="login-form-page" class="page-container hidden">
+                <div class="dashboard-header">
+                    <div>
+                        <h2 id="login-page-title">Login to System</h2>
+                        <p>Please enter your credentials to proceed</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="app.goHome()">← Back to Home</button>
+                </div>
+                <div class="card" style="max-width: 400px; margin: 40px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                    <h3 id="login-card-title" style="background:var(--primary-navy); color:white; padding:15px; border-radius:8px 8px 0 0; text-align:center;">User Login</h3>
+                    <div class="card-inner" style="padding:25px;">
+                        <form onsubmit="app.handleAuthSubmit(event)">
+                            <input type="hidden" id="login-role" name="role">
+                            
+                            <label style="font-weight:bold; display:block; margin-bottom:5px;">User ID</label>
+                            <input type="text" id="login-userid" name="userid" placeholder="Enter User ID" required style="width:100%; padding:10px; margin-bottom:20px; border:1px solid #ccc; border-radius:4px; font-size:1rem;">
+                            
+                            <label style="font-weight:bold; display:block; margin-bottom:5px;">Password</label>
+                            <input type="password" id="login-password" name="password" placeholder="Enter Password" required style="width:100%; padding:10px; margin-bottom:20px; border:1px solid #ccc; border-radius:4px; font-size:1rem;">
+                            
+                            <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; font-size:1.1rem;">Login</button>
+                            <p id="login-error" style="color:#d32f2f; margin-top:15px; display:none; text-align:center; font-weight:bold; background:#ffebee; padding:10px; border-radius:4px;">Invalid user id or password.</p>
+                            
+                            <div id="register-link-container" style="margin-top:20px; text-align:center; border-top:1px solid #ccc; padding-top:15px; display:none;">
+                                <p style="margin-bottom:10px;">Don't have an account?</p>
+                                <button type="button" class="btn btn-secondary" style="width:100%" onclick="app.showRegistration()">Register as a New Student</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Registration Form Page -->
+            <div id="registration-container" class="page-container hidden">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>🎓 Student Registration</h2>
+                        <p>Complete your profile to register for the portal</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="app.goHome()">← Back to Home</button>
+                </div>
+                <div class="card" style="max-width: 800px; margin: 20px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                    <h3 style="background:var(--primary-navy); color:white; padding:15px; border-radius:8px 8px 0 0; text-align:center;">Registration Form</h3>
+                    <div class="card-inner" style="padding:25px;">
+                        <form onsubmit="app.handleRegistrationSubmit(event)">
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                                <div><label style="font-weight:bold;">Student Name</label><input type="text" id="reg-name" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;"></div>
+                                <div><label style="font-weight:bold;">Register Number</label><input type="text" id="reg-regno" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;"></div>
+                                <div><label style="font-weight:bold;">Department</label><input type="text" id="reg-dept" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;"></div>
+                                <div><label style="font-weight:bold;">Program</label><select id="reg-program" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;"><option value="UG">UG</option><option value="PG">PG</option></select></div>
+                                <div><label style="font-weight:bold;">Year</label><input type="number" id="reg-year" min="1" max="5" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;"></div>
+                                <div><label style="font-weight:bold;">Mobile Number</label><input type="tel" id="reg-mobile" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;"></div>
+                                <div><label style="font-weight:bold;">Email</label><input type="email" id="reg-email" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;"></div>
+                                <div><label style="font-weight:bold;">Create User ID</label><input type="text" id="reg-userid" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;"></div>
+                                <div><label style="font-weight:bold;">Create Password</label><input type="password" id="reg-password" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;"></div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; font-size:1.1rem; margin-top:20px;">Submit Registration</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rules Section -->
+            <div id="rules-container" class="page-container hidden">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>📕 Hostel Rules & Regulations</h2>
+                        <p>Official rules applicable to all hostel residents</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="app.goHome()">← Back to Home</button>
+                </div>
+                <div class="card">
+                    <h3>📜 Rules & Regulations</h3>
+                    <div class="card-inner" style="line-height: 2;">
+                        <ol style="padding-left: 20px;">
+                            <li><strong>Breakfast Hours:</strong> Breakfast is served from 8:30 AM to 9:30 AM.</li>
+                            <li><strong>Hostel Time:</strong> Students must leave for hostel daily before 9:30 AM to go
+                                for College.</li>
+                            <li><strong>Lunch Hours:</strong> Lunch is served from 1:00 PM to 2:00 PM.</li>
+                            <li><strong>Mobile Phone Policy:</strong> The use of mobile phones is strictly prohibited
+                                within the hostel.</li>
+                            <li><strong>Dining Policy:</strong> Only hostel-provided food may be consumed while staying
+                                on the premises.</li>
+                            <li><strong>Room Discipline:</strong> Students are permitted only in their assigned rooms;
+                                visiting other rooms is strictly forbidden.</li>
+                            <li><strong>Curfew:</strong> The hostel gate will be closed promptly at 5:30 PM every day.
+                            </li>
+                            <li><strong>Dinner Time:</strong> Dinner is served at 7:00 PM.</li>
+                            <li><strong>Study Hours:</strong> Mandatory study time is observed from 8:00 PM to 10:00 PM.
+                            </li>
+                            <li><strong>Weekly Meeting:</strong> A mandatory meeting with the Warden will be conducted
+                                every Tuesday from 6:00 PM to 7:00 PM.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Chart Section -->
+            <div id="menu-container" class="page-container hidden">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>🍽️ Weekly Menu Chart</h2>
+                        <p>Official hostel menu for the current week</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="app.goHome()">← Back to Home</button>
+                </div>
+                <div class="card">
+                    <h3>📅 This Week's Menu</h3>
+                    <div class="card-inner" style="text-align: center;">
+                        <img src="images/menu_chart.jpg" alt="Hostel Menu Chart"
+                            style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaints / Queries Section -->
+            <div id="complaints-container" class="page-container hidden">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>📢 Complaints / Queries</h2>
+                        <p>Submit your grievances or questions to the administration</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="app.goHome()">← Back to Home</button>
+                </div>
+                <div class="card">
+                    <h3>📝 Submit Your Complaint or Query</h3>
+                    <div class="card-inner">
+                        <p style="color: #666; margin-bottom: 16px;">We value your input. Please describe your issue or
+                            query below. All complaints are addressed within 48 hours.</p>
+                        <form onsubmit="app.handleComplaintSubmit(event)">
+                            <label>Issue Category</label>
+                            <select name="category" required>
+                                <option value="">Select Category...</option>
+                                <option value="Food Quality">Food Quality</option>
+                                <option value="Quantity / Portions">Quantity / Portions</option>
+                                <option value="Hygiene / Cleanliness">Hygiene / Cleanliness</option>
+                                <option value="Staff Behavior">Staff Behavior</option>
+                                <option value="Infrastructure">Infrastructure (Water/Lights)</option>
+                                <option value="General Query">General Query</option>
+                                <option value="Other">Other</option>
+                            </select>
+
+                            <label>Description / Comment</label>
+                            <textarea name="comment"
+                                placeholder="Please provide details about your complaint or query..." rows="4"
+                                required></textarea>
+
+                            <button type="submit" class="btn btn-primary" style="width:100%">Submit Complaint /
+                                Query</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notice Board -->
+            <div id="notice-container" class="page-container hidden">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>📢 Notice Board</h2>
+                        <p>Official notices and announcements from hostel administration</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="app.goHome()">← Back to Home</button>
+                </div>
+                <div class="card">
+                    <h3 style="background:linear-gradient(135deg,#e65100,#f57c00);">📋 All Notices</h3>
+                    <div class="card-inner" id="notice-list">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaint Tracker -->
+            <div id="complaint-tracker-container" class="page-container hidden">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>📊 Complaint Tracker</h2>
+                        <p>Track the status of all submitted complaints and queries</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="app.goHome()">← Back to Home</button>
+                </div>
+                <div class="card">
+                    <h3 style="background:linear-gradient(135deg,#880e4f,#ad1457);">📋 All Complaints & Status</h3>
+                    <div class="card-inner" id="tracker-list">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Contact Directory -->
+            <div id="contacts-container" class="page-container hidden">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>📞 Contact Directory</h2>
+                        <p>Emergency contacts and important phone numbers</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="app.goHome()">← Back to Home</button>
+                </div>
+                <div class="info-grid">
+                    <div class="info-card card-blue">
+                        <h3>🏨 Hostel Office</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li>📞 Office: 044-2846XXXX</li>
+                                <li>📧 Email: hostel@tn.gov.in</li>
+                                <li>🕐 Working Hours: 9:00 AM - 5:00 PM</li>
+                                <li>📍 Address: Government Hostel, Chennai</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="info-card card-green">
+                        <h3>👨‍🍳 Warden Contact</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li>📱 Mobile: 98765XXXXX</li>
+                                <li>📞 Office: 044-2847XXXX</li>
+                                <li>📧 Email: warden@hostel.tn.gov.in</li>
+                                <li>🕐 Available: 6:00 AM - 10:00 PM</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="info-card card-red">
+                        <h3>🚑 Emergency Numbers</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li>🚨 Police: 100</li>
+                                <li>🔥 Fire Station: 101</li>
+                                <li>🚑 Ambulance: 108</li>
+                                <li>📞 Emergency: 112</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="info-card card-purple">
+                        <h3>🏥 Medical Support</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li>🏥 GH Hospital: 044-2530XXXX</li>
+                                <li>👨‍⚕️ College Doctor: 98765XXXXX</li>
+                                <li>💊 Pharmacy: 044-2531XXXX</li>
+                                <li>🕐 24/7 Health Helpline: 104</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="info-card card-gold">
+                        <h3>🎓 College Administration</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li>📞 Principal Office: 044-2848XXXX</li>
+                                <li>📞 Dean Office: 044-2849XXXX</li>
+                                <li>📧 admin@college.tn.gov.in</li>
+                                <li>🕐 Working Hours: 9:30 AM - 5:00 PM</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="info-card card-teal">
+                        <h3>🔧 Maintenance & Support</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li>🔌 Electrical: 98765XXXXX</li>
+                                <li>🔧 Plumbing: 98765XXXXX</li>
+                                <li>🚰 Water Supply: 044-2843XXXX</li>
+                                <li>🧹 Housekeeping: 98765XXXXX</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Site Map -->
+            <div id="sitemap-container" class="page-container hidden">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>🗺️ Site Map</h2>
+                        <p>Complete overview of the portal structure</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="app.goHome()">← Back to Home</button>
+                </div>
+
+                <div class="card">
+                    <h3 style="background:linear-gradient(135deg,#00695c,#00897b);">🌐 Quick Navigation</h3>
+                    <div class="card-inner">
+                        <div class="info-grid">
+                            <div class="info-card card-blue">
+                                <h3
+                                    style="padding-bottom: 8px; border-bottom: 1px solid #e0e0e0; margin-bottom: 10px; color: var(--primary-navy);">
+                                    👤 Login Portals</h3>
+                                <div class="card-body">
+                                    <ul style="list-style-type: none; padding-left: 0;">
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.login('student')"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Student Login</a></li>
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.login('warden')"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Warden Login</a></li>
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.login('admin')"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Admin Login</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="info-card card-green">
+                                <h3
+                                    style="padding-bottom: 8px; border-bottom: 1px solid #e0e0e0; margin-bottom: 10px; color: var(--primary-navy);">
+                                    📋 Public Services</h3>
+                                <div class="card-body">
+                                    <ul style="list-style-type: none; padding-left: 0;">
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.showMenu()"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Menu Chart</a></li>
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.showRules()"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Hostel Rules</a></li>
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.showNoticeBoard()"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Notice Board</a></li>
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.showContacts()"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Contact Directory</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="info-card card-maroon">
+                                <h3
+                                    style="padding-bottom: 8px; border-bottom: 1px solid #e0e0e0; margin-bottom: 10px; color: var(--primary-navy);">
+                                    📢 Support System</h3>
+                                <div class="card-body">
+                                    <ul style="list-style-type: none; padding-left: 0;">
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.showComplaints()"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Submit a Complaint</a></li>
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.showComplaintTracker()"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Track Complaint Status</a></li>
+                                        <li style="margin-bottom:8px;"><a href="#" onclick="app.showContacts()"
+                                                style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">▹
+                                                Help Line</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warden Dashboard -->
+            <div id="warden-dashboard" class="page-container hidden">
+                <!-- Rendered by JS -->
+            </div>
+
+            <!-- Student Dashboard -->
+            <div id="student-dashboard" class="page-container hidden">
+                <!-- Rendered by JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Utility Icons Row (TN Gov Style) -->
+    <section class="utility-row">
+        <div class="utility-icons">
+            <div class="utility-icon" onclick="app.login('admin')">
+                <div class="icon-circle">🛡️</div>
+                <span>Admin Panel</span>
+            </div>
+            <div class="utility-icon" onclick="app.login('warden')">
+                <div class="icon-circle">👨‍🍳</div>
+                <span>Warden Panel</span>
+            </div>
+            <div class="utility-icon" onclick="app.login('student')">
+                <div class="icon-circle">🎓</div>
+                <span>Student Portal</span>
+            </div>
+            <div class="utility-icon" onclick="app.showMenu()">
+                <div class="icon-circle">🍽️</div>
+                <span>Menu Chart</span>
+            </div>
+            <div class="utility-icon" onclick="app.showRules()">
+                <div class="icon-circle">📕</div>
+                <span>Hostel Rules</span>
+            </div>
+            <div class="utility-icon" onclick="app.showComplaints()">
+                <div class="icon-circle">📢</div>
+                <span>Complaints</span>
+            </div>
+            <div class="utility-icon">
+                <div class="icon-circle">📞</div>
+                <span>Help Line</span>
+            </div>
+            <div class="utility-icon">
+                <div class="icon-circle">💬</div>
+                <span>Feedback</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (TN Gov Style) -->
+    <footer class="tnpsc-footer">
+        <div class="footer-links">
+            <a href="#">Disclaimer</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">FAQ</a>
+            <a href="#" onclick="app.showSitemap()">Site Map</a>
+            <a href="#">Feedback</a>
+        </div>
+        <div class="footer-main">
+            <div class="visitor-count">
+                <div class="count-number" id="visitor-count">0</div>
+                <div class="count-label">Visitor Count</div>
+            </div>
+            <div class="footer-info">
+                <p><strong>Content owned and Maintained by: Hostel Management System</strong></p>
+                <p>Designed & Developed for Government Hostel Management Project</p>
+                <p>Queries may be sent to: <strong>hostel.admin@tn.gov.in</strong></p>
+            </div>
+            <div style="text-align: right;">
+                <p style="color: #90caf9; font-size: 0.75rem;" id="last-updated"></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Hostel Management System. All Rights Reserved. | Government of Tamil Nadu</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">⬆</button>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">Action Successful</div>
+
+    <!-- SheetJS Library for Excel Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script type="module">
+        import { App } from './js/app.js';
+        window.app = new App();
+    </script>
+
+    <script>
+        // ===== Date Display =====
+        const now = new Date();
+        // ===== Last Updated =====
+        document.getElementById('last-updated').textContent = 'Last Updated: ' + now.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+
+        // ===== Visitor Count Animation =====
+        const counterEl = document.getElementById('visitor-count');
+        let target = 19575018;
+        let current = 19574000;
+        const counterInterval = setInterval(() => {
+            current += Math.floor(Math.random() * 30) + 5;
+            if (current >= target) {
+                current = target;
+                clearInterval(counterInterval);
+            }
+            counterEl.textContent = current.toLocaleString('en-IN');
+        }, 30);
+
+        // ===== Image Carousel =====
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-main .slide');
+        const dotsContainer = document.getElementById('carousel-dots');
+
+        // Create dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        });
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            document.querySelectorAll('.carousel-nav .dot')[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            document.querySelectorAll('.carousel-nav .dot')[currentSlide].classList.add('active');
+        }
+
+        window.carouselNext = function () {
+            goToSlide((currentSlide + 1) % slides.length);
+        };
+
+        window.carouselPrev = function () {
+            goToSlide((currentSlide - 1 + slides.length) % slides.length);
+        };
+
+        // Auto-advance
+        setInterval(() => {
+            goToSlide((currentSlide + 1) % slides.length);
+        }, 5000);
+
+        // ===== Font Size Controls =====
+        let fontSize = 14;
+        window.changeFontSize = function (dir) {
+            if (dir === 0) fontSize = 14;
+            else fontSize = Math.max(12, Math.min(20, fontSize + dir));
+            document.body.style.fontSize = fontSize + 'px';
+        };
+
+        // ===== Back to Top =====
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // ===== Hide Hero when navigated away =====
+        const heroSection = document.getElementById('hero-section');
+        const observer = new MutationObserver(() => {
+            const loginContainer = document.getElementById('login-container');
+            if (loginContainer && !loginContainer.classList.contains('hidden')) {
+                heroSection.style.display = '';
+            } else {
+                heroSection.style.display = 'none';
+            }
+        });
+
+        const appEl = document.getElementById('app');
+        observer.observe(appEl, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+
+        // ===== Registration Form Logic =====
+        function toggleWhatsappInput() {
+            const isSame = document.getElementById('same-as-mobile').checked;
+            const mobile = document.getElementById('reg-mobile').value;
+            const whatsapp = document.getElementById('reg-whatsapp');
+            if (isSame) {
+                whatsapp.value = mobile;
+                whatsapp.readOnly = true;
+                whatsapp.style.backgroundColor = '#f5f5f5';
+                whatsapp.style.cursor = 'not-allowed';
+            } else {
+                whatsapp.readOnly = false;
+                whatsapp.style.backgroundColor = '#fff';
+                whatsapp.style.cursor = 'text';
+            }
+        }
+        function syncWhatsapp() {
+            if(document.getElementById('same-as-mobile').checked) {
+                document.getElementById('reg-whatsapp').value = document.getElementById('reg-mobile').value;
+            }
+        }
+        function updateSubCategory() {
+            const cat = document.getElementById('dept-category').value;
+            const subCat = document.getElementById('sub-category');
+            subCat.innerHTML = '<option value="">Select Sub Category...</option>';
+            if (cat === 'ug') {
+                const ugOptions = [
+                    'B.Sc Tamil', 'B.Sc English', 'B.Sc Maths', 'B.Sc Chemistry', 
+                    'B.Sc Computer Science', 'B.Sc Physics', 'BCA Computer Application',
+                    'B.Sc History', 'B.Sc Economics', 'B.Sc Zoology', 'B.Sc Botany', 
+                    'B.Sc Micro biology', 'BBA - Business Administation'
+                ];
+                ugOptions.forEach(opt => {
+                    subCat.innerHTML += `<option value="${opt}">${opt}</option>`;
+                });
+            } else if (cat === 'pg') {
+                const pgOptions = [
+                    'M.Sc Tamil', 'M.Sc English', 'M.Sc Maths', 'M.Sc Chemistry', 
+                    'M.Sc Computer Science', 'M.Sc Physics', 'MCA Computer Application', 
+                    'M.Sc History', 'M.Sc Economics', 'M.Sc Zoology', 'M.Sc Botany', 
+                    'M.Sc Micro biology', 'MBA - Business Administation'
+                ];
+                pgOptions.forEach(opt => {
+                    subCat.innerHTML += `<option value="${opt}">${opt}</option>`;
+                });
+            }
+        }
+    </script>
+
+</body>
+
+</html>
